@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignInActivity">
+
+    <ImageView
+        android:id="@+id/iv_person"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/ic_person_24"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.4" />
+
+    <RadioGroup
+        android:id="@+id/rdg_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        app:layout_constraintEnd_toEndOf="@id/iv_person"
+        app:layout_constraintStart_toStartOf="@id/iv_person"
+        app:layout_constraintTop_toBottomOf="@id/iv_person">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rdb_photo_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:checked="true"
+            android:text="사진검색" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rdb_user_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checked="false"
+            android:text="사용자검색" />
+    </RadioGroup>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_text_field"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="10dp"
+        android:hint="사진검색"
+        app:boxStrokeColor="@color/purple_200"
+        app:counterEnabled="true"
+        app:counterMaxLength="12"
+        app:endIconMode="clear_text"
+        app:helperText="검색어를 입력하세요"
+        app:helperTextEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rdg_search"
+        app:shapeAppearance="@style/ShapeAppearance.MaterialComponents.MediumComponent"
+        app:startIconDrawable="@drawable/ic_image_search_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_search_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:inputType="text"
+            android:maxLength="12" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <include
+        layout="@layout/layout_button_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/layout_text_field"
+        app:layout_constraintStart_toStartOf="@+id/layout_text_field"
+        app:layout_constraintTop_toBottomOf="@id/layout_text_field" />
+</androidx.constraintlayout.widget.ConstraintLayout>
