@@ -14,11 +14,6 @@
         <activity
             android:name=".coroutine.PracticeActivity"
             android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity
@@ -33,7 +28,12 @@
             android:name=".SignInActivity"
             android:exported="true"
             android:label="@string/title_activity_sign_in"
-            android:theme="@style/Theme.Seminar2.NoActionBar" />
+            android:theme="@style/Theme.Seminar2.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true" />
