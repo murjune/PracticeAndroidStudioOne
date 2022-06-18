@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface IRetrofit {
-    // https://api.unsplash.com/search/photos?client/photos/?query=..
+    // https://api.unsplash.com/search/photos?query=
 
     @GET(API.SEARCH_PHOTOS)
     fun searchPhotos(@Query("query") searchTerm: String): Call<JsonElement>

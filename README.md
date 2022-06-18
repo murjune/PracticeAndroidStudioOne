@@ -11,7 +11,7 @@ Sopt 세미나에서 배운 내용 복습 및 새로운 기능을 연습하기 �
 
 ## Chapter 2
 - [서버 연습 사이트](https://unsplash.com/documentation#search-photos)에서 실습하도록 하겠슴니다.
-### 서버통신 오류 해결
+## 서버통신 오류 해결
 ```
 onFailure() called/ t: javax.net.ssl.SSLHandshakeException: Chain validation failed
 ```
@@ -23,11 +23,11 @@ SSL/TSL 인증서는 브라우저 시스템과 웹 서버의 시계가 거의 �
  연결이 잘못된 것으로 간주
 ```
 
-### Intercepter
+## Intercepter
 > 클라와 서버 간에 Retrofit or OkHttp를 사용하여 통신을 하는데 
 > 인터셉터를 추가로 사용하면 클라에서 서버로 데이터 전송 및 수신받을때 `intercepter`라는 녀석이 중간에 개입해서  
 > 기본 매개변수를 추가, 로그확인, 사용자 위치 추가 등 다양한 처리를 해줄 수 있다.
-- 1. LoggingIntercepter
+### 1. LoggingIntercepter
 ```kotlin
 // RetrofitClient.Kt
 // 1) 로깅 인터셉터
@@ -103,6 +103,76 @@ logging인터셉터 level을 다음과 같이 `Body`로 설정할 수도 있다
 ```  
 
 <img width = 700 src="https://user-images.githubusercontent.com/87055456/174439522-7d6fe1ac-befd-431e-8752-6b2dc77f69d9.png">  
+
+### 2. 기본 파라미터 추가
+솔직히 완벽히 이해하지 못했다.. 이 부분을 좀 더 추가로 공부해야할듯..
+```kotlin
+// 2) 기본 파라메터 인터셉터 설정
+    fun getBaseParameterInterceptor(): Interceptor {
+        val baseParameterInterceptor: Interceptor = object : Interceptor {
+            override fun intercept(chain: Interceptor.Chain): Response {
+
+                val originalRequest = chain.request()
+
+                // 쿼리 파라메터 추가
+                val addUrl: HttpUrl = originalRequest.url
+                    .newBuilder()
+                        // 쿼리 추가
+                    .addQueryParameter("client_id", API.CLIENT_ID)
+                    .build()
+
+                val newRequest: Request = originalRequest.newBuilder()
+                    .url(addUrl)
+                    .method(originalRequest.method, originalRequest.body)
+                    .build()
+
+                return chain.proceed(newRequest)
+            }
+        }
+        return baseParameterInterceptor
+    }
+// 클라이언트에 인터셉터 추가
+client.addInterceptor(getBaseParameterInterceptor())
+```
+- 실행결과  
+
+<img width = 700 src="https://user-images.githubusercontent.com/87055456/174442783-ee448654-18b1-41cd-b1c1-08417cb6b534.png">  
+
+```
+2022-06-18 23:03:51.669 19843-19883/org.techtown.seminar2 D/로그: RetrofitClient - log() called/ message: {"total":10000,"total_pages":1000,"results":[{"id":"gKXKBY-C-Dk","created_at":"2018-01-02T05:20:47-05:00","updated_at":"2022-06-18T03:02:34-04:00","promoted_at":null,"width":5026,"height":3458,"color":"#598c73","blur_hash":"LDCtq6Me0_kp3mof%MofUwkp,cRP","description":"Gipsy the Cat was sitting on a bookshelf one afternoon and just stared right at me, kinda saying: “Will you take a picture already?”","alt_description":"black and white cat lying on brown bamboo chair inside room","urls":{"raw":"https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixid=MnwzMzg2MDd8MHwxfHNlYXJjaHwxfHxjYXR8ZW58MHx8fHwxNjU1NTYxMzYz\u0026ixlib=rb-1.2.1","full":"https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?crop=entropy\u0026cs=tinysrgb\u0026fm=jpg\u0026ixid=MnwzMzg2MDd8MHwxfHNlYXJjaHwxfHxjYXR8ZW58MHx8fHwxNjU1NTYxMzYz\u0026ixlib=rb-1.2.1\u0026q=80","regular":"https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?crop=entropy\u0026cs=tinysrgb\u0026fit=max\u0026fm=jpg\u0026ixid=MnwzMzg2MDd8MHwxfHNlYXJjaHwxfHxjYXR8ZW58MHx8fHwxNjU1NTYxMzYz\u0026ixlib=rb-1.2.1\u0026q=80\u0026w=1080","small":"https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?crop=entropy\u0026cs=tinysrgb\u0026fit=max\u0026fm=jpg\u0026ixid=MnwzMzg2MDd8MHwxfHNlYXJjaHwxfHxjYXR8ZW58MHx8fHwxNjU1NTYxMzYz\u0026ixlib=rb-1.2.1\u0026q=80\u0026w=400","thumb":"https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?crop=entropy\u0026cs=tinysrgb\u0026fit=max\u0026fm=jpg\u0026ixid=MnwzMzg2MDd8MHwxfHNlYXJjaHwxfHxjYXR8ZW58MHx8fHwxNjU1NTYxMzYz\u0026ixlib=rb-1.2.1\u0026q=80\u0026w=200","small_s3":"https://s3.us-west-2.amazonaws.com/images.unsplash.com/small/photo-1514888286974-6c03e2ca1dba"},"links":{"self":"https://api.unsplash.com/photos/gKXKBY-C-Dk","html":"https://unsplash.com/photos/gKXKBY-C-Dk","download":"https://unsplash.com/photos/gKXKBY-C-Dk/download?ixid=MnwzMzg2MDd8MHwxfHNlYXJjaHwxfHxjYXR8ZW58MHx8fHwxNjU1NTYxMzYz","download_location":"https://api.unsplash.com/photos/gKXKBY-C-Dk/download?ixid=MnwzMzg2MDd8MHwxfHNlYXJjaHwxfHxjYXR8ZW58MHx8fHwxNjU1NTYxMzYz"},"categories":[],"likes":1019,"liked_by_user":false,"current_user_collections":[],"sponsorship":null,"topic_submissions":{},"user":{"id":"wBu1hC4QlL0","updated_at":"2022-06-17T02:02:10-04:00","username":"madhatterzone","name":"Manja Vitolic","first_name":"Manja","last_name":"Vitolic","twitter_username":null,"portfolio_url":"https://www.instagram.com/makawee_photography/?hl=en","bio":"https://www.instagram.com/makawee_photography/","location":"Wiesbaden, Germany","links":{"self":"https://api.unsplash.com/users/madhatterzone","html":"https://unsplash.com/@madhatterzone","photos":"https://api.unsplash.com/users/madhatterzone/photos","likes":"https://api.unsplash.com/users/madhatterzone/likes","portfolio":"https://api.unsplash.com/users/madhatterzone/portfolio","following":"https://api.unsplash.com/users/madhatterzone/following","followers":"https://api.unsplash.com/users/madhatterzone/followers"},"profile_image":{"small":"https://images.unsplash.com/profile-fb-1514888261-0e72294039e0.jpg?ixlib=rb-1.2.1\u0026crop=faces\u0026fit=crop\u0026w=32\u0026h=32","medium":"https://images.unsplash.com/profile-fb-1514888261-0e72294039e0.jpg?ixlib=rb-1.2.1\u0026crop=faces\u0026fit=crop\u0026w=64\u0026h=64","large":"https://images.unsplash.com/profile-fb-1514888261-0e72294039e0.jpg?ixlib=rb-1.2.1\u0026crop=faces\u0026fit=crop\u0026w=128\u0026h=128"},"instagram_username":"makawee_photography","total_collections":0,"total_likes":10,"total_photos":65,"accepted_tos":true,"for_hire":true,"social":{"instagram_username":"makawee_photography","portfolio_url":"https://www.instagram.com/makawee_photography/?hl=en","twitter_username":null,"paypal_email":null}},"tags":[{"type":"landing_page","title":"cat","source":{"ancestry":{"type":{"slug":"images","pretty_slug":"Images"},"category":{"slug":"animals","pretty_slug":"Animals"},"subcategory":{"slug":"cat","pretty_slug":"Cat"}},"title":"Cat images \u0026 pictures","subtitle":"Download free cat image
+2022-06-18 23:03:51.706 19843-19883/org.techtown.seminar2 D/로그: {
+        "total": 10000,
+        "total_pages": 1000,
+        "results": [
+            {
+                "id": "gKXKBY-C-Dk",
+                "created_at": "2018-01-02T05:20:47-05:00",
+                "updated_at": "2022-06-18T03:02:34-04:00",
+                "promoted_at": null,
+                "width": 5026,
+                "height": 3458,
+                "color": "#598c73",
+                "blur_hash": "LDCtq6Me0_kp3mof%MofUwkp,cRP",
+                "description": "Gipsy the Cat was sitting on a bookshelf one afternoon and just stared right at me, kinda saying: “Will you take a picture already?”",
+                "alt_description": "black and white cat lying on brown bamboo chair inside room",
+                "urls": {
+                .. 생략
+```
+- 포스트맨과 비교
+
+### 3. TimeOut
+- 연결할 수 없는 경우 시간 초과를 사용하여 호출에 실패한다.
+- 네트워크 오류는 클라이언트 연결 문제, 서버 가용성 문제 또는 그 사이의 모든 문제로 발생할 수 있다.
+- Okhttp는 연결, 읽기 및 쓰기 제한 시간을 지원한다.  
+- 기본값: 10초
+```kotlin
+with(client ){
+    connectTimeout(10, TimeUnit.SECONDS) // 연결 타임아웃
+    readTimeout(10, TimeUnit.SECONDS)   // 읽기 타임아웃
+    writeTimeout(10, TimeUnit.SECONDS)  // 쓰기 타임아웃
+    retryOnConnectionFailure(true) // 실패시 다시 시도
+} 
+```
 
 
 
