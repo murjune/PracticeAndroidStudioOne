@@ -6,6 +6,16 @@ import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.Toast
 
+// TODO 폴더링 꼭하기
+
+// String? 익스텐션
+
+// JSON 객체가 맞는가?
+fun String?.isJsonObject(): Boolean = this?.startsWith("{") == true && this.endsWith("}")
+
+// JSON 리스트가 맞는가?
+fun String?.isJsonArray(): Boolean = this?.startsWith("[") == true && this.endsWith("]")
+
 // editText에 대한 익스텐션
 fun EditText.onMyTextChanged(completion: (Editable?) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {

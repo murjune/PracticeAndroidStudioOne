@@ -25,9 +25,9 @@
             android:exported="true"
             android:label="@string/title_activity_view_model_sample" />
         <activity
-            android:name=".SignInActivity"
+            android:name=".SearchActivity"
             android:exported="true"
-            android:label="@string/title_activity_sign_in"
+            android:label="@string/title_activity_search"
             android:theme="@style/Theme.Seminar2.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

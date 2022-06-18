@@ -8,7 +8,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.JsonElement
 import org.techtown.seminar2.data.api.RetrofitClient
-import org.techtown.seminar2.databinding.ActivitySignInBinding
+import org.techtown.seminar2.data.entry.search.ResponseState
+import org.techtown.seminar2.databinding.ActivitySearchBinding
 import org.techtown.seminar2.util.Constants.TAG
 import org.techtown.seminar2.util.onMyTextChanged
 import org.techtown.seminar2.util.showToast
@@ -16,15 +17,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SignInActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySignInBinding
+    private lateinit var binding: ActivitySearchBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivitySignInBinding.inflate(layoutInflater)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        Log.d(TAG, "MainActivity - onCreate() called")
+        Log.d(TAG, "SearchActivity - onCreate() called")
 
         // 라디오 그룹 가져오기
         activeRadioButton()
@@ -32,20 +33,27 @@ class SignInActivity : AppCompatActivity() {
         addTextChangedListener()
     }
 
-    private fun searchPhotos(searchTerm: String?, completion: (responseState: Boolean, msg: String) -> Unit) {
-        Log.d(TAG, "SignInActivity - searchPhotos() called")
+    private fun searchPhotos(
+        searchTerm: String?,
+        completion: (responseState: ResponseState, msg: String) -> Unit
+    ) {
+        Log.d(TAG, "SearchActivity - searchPhotos() called")
         val term: String = searchTerm ?: ""
         val call: Call<JsonElement> = RetrofitClient.photoService.searchPhotos(term)
 
         call.enqueue(object : Callback<JsonElement> {
             override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
-                Log.d(TAG, "SignInActivity - onResponse() called/ response : ${response.body()}")
-                completion(true, response.body().toString())
+                Log.d(TAG, "SearchActivity - onResponse() called/ response : ${response.body()}")
+                if (response.isSuccessful) {
+                    completion(ResponseState.SUCCESS, response.body().toString())
+                } else {
+                    completion(ResponseState.FAIL, response.body().toString())
+                }
             }
 
             override fun onFailure(call: Call<JsonElement>, t: Throwable) {
-                Log.d(TAG, "SignInActivity - onFailure() called/ t: $t")
-                completion(false, t.toString())
+                Log.d(TAG, "SearchActivity - onFailure() called/ t: $t")
+                Log.e("NetworkTest", "error:$t")
             }
         })
     }
@@ -67,13 +75,12 @@ class SignInActivity : AppCompatActivity() {
         binding.btnSearch.setOnClickListener {
             searchPhotos(
                 binding.edtSearchImage.text.toString(),
-                completion = {
-                        responseState, responsebody ->
+                completion = { responseState, responsebody ->
                     when (responseState) {
-                        true -> {
+                        ResponseState.SUCCESS -> {
                             Log.d(TAG, "api 호출 성공: $responsebody")
                         }
-                        false -> {
+                        ResponseState.FAIL -> {
                             showToast("api 호출 error: $responsebody")
                             Log.d(TAG, "api 호출 error: $responsebody")
                         }
