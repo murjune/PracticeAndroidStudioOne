@@ -1,6 +1,7 @@
 package org.techtown.seminar2.data.api
 
 import com.google.gson.JsonElement
+import org.techtown.seminar2.data.entry.search.lotto.ResponseLottoNum
 import org.techtown.seminar2.util.API
 import retrofit2.Call
 import retrofit2.http.GET
@@ -14,4 +15,7 @@ interface IRetrofit {
 
     @GET(API.SEARCH_USERS)
     fun searchUsers(@Query("query") searchTerm: String): Call<JsonElement>
+
+    @GET("common.do")
+    fun responseLottoInfo(@Query("drwNo") round: String): Call<ResponseLottoNum>
 }

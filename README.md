@@ -6,23 +6,10 @@ Sopt 세미나에서 배운 내용 복습 및 새로운 기능을 연습하기 �
 - 뷰페이저, 바텀네비, 네비게이션 컴포넌트 복습
 - 코루틴 실습
 - 뷰모델 실습
-- 뷰모델 과 코루틴을 활용하여 서버연결을 마무리하는 것이 제 목표입니다 ㅎ ㅎ
-# 서버 통신
+- 뷰모델과 코루틴을 활용하여 서버연결을 마무리하는 것이 제 목표입니다 ㅎ ㅎ
 
-## Chapter 2
+# Chapter 1: 서버 통신 연습!!
 - [서버 연습 사이트](https://unsplash.com/documentation#search-photos)에서 실습하도록 하겠슴니다.
-## 서버통신 오류 해결
-```
-onFailure() called/ t: javax.net.ssl.SSLHandshakeException: Chain validation failed
-```
-위와 같은 오류가 발생했다..  
-처음보는 오류라 찾아봤더니, 에뮬레이터의 시간과 서버통신되는 시점이 비슷하지 않으면 오류가 발생한다고 한다..  
-- [참고문헌](https://geekcarrot.net/ko/android-%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8F%B0%EC%97%90%EC%84%9C-https-ssl-tsl-%EC%97%B0%EA%B2%B0-%EC%98%A4%EB%A5%98-%EC%88%98%EC%A0%95)
-```
-SSL/TSL 인증서는 브라우저 시스템과 웹 서버의 시계가 거의 같은 시간으로 설정되어 있지 않은 경우
- 연결이 잘못된 것으로 간주
-```
-
 ## Intercepter
 > 클라와 서버 간에 Retrofit or OkHttp를 사용하여 통신을 하는데 
 > 인터셉터를 추가로 사용하면 클라에서 서버로 데이터 전송 및 수신받을때 `intercepter`라는 녀석이 중간에 개입해서  
@@ -173,6 +160,168 @@ with(client ){
     retryOnConnectionFailure(true) // 실패시 다시 시도
 } 
 ```
+## 서버통신 오류 해결
+```
+onFailure() called/ t: javax.net.ssl.SSLHandshakeException: Chain validation failed
+```
+위와 같은 오류가 발생했다..  
+처음보는 오류라 찾아봤더니, 에뮬레이터의 시간과 서버통신되는 시점이 비슷하지 않으면 오류가 발생한다고 한다..
+- [참고문헌](https://geekcarrot.net/ko/android-%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8F%B0%EC%97%90%EC%84%9C-https-ssl-tsl-%EC%97%B0%EA%B2%B0-%EC%98%A4%EB%A5%98-%EC%88%98%EC%A0%95)
+```
+SSL/TSL 인증서는 브라우저 시스템과 웹 서버의 시계가 거의 같은 시간으로 설정되어 있지 않은 경우
+ 연결이 잘못된 것으로 간주
+```
 
+# Chapter 2: 로또 번호 생성기(코루틴 예제)
+- [심화 스터디 링크](https://www.notion.so/q-bit/Coroutine-ae151ba9ec7d4118938c74a5652af618)  
+- 수빈님의 과제!!  
+- 1단계) 세미나에서 배운대로 CallBack + Interceptor 공부한 거로 구현(복습)  
+- 2단계) 코루틴 적용하기
 
+## 1단계
+```kotlin
+class LottoActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityLottoBinding
+    private var lottoNums = mutableListOf<Int>()
+    private lateinit var myLottoNum: MutableList<Int>
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityLottoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        initNetWork()
+        onClickButton()
+    }
+
+    private fun onClickButton() {
+        binding.btnResult.setOnClickListener {
+            if (lottoNums.isNotEmpty()) {
+                createMyLottoNum()
+                val result = getLottoResult()
+                changeMyLottoNum()
+                binding.tvWinning.text = "$lottoNums \n $result"
+            } else {
+                showToast("아직 서버에서 로또번호 못가져옴 ㅜ")
+            }
+        }
+    }
+    private fun changeMyLottoNum() {
+        with(binding) {
+            tvNum1.text = myLottoNum[0].toString()
+            tvNum2.text = myLottoNum[1].toString()
+            tvNum3.text = myLottoNum[2].toString()
+            tvNum4.text = myLottoNum[3].toString()
+            tvNum5.text = myLottoNum[4].toString()
+            tvNum6.text = myLottoNum[5].toString()
+        }
+    }
+    private fun createMyLottoNum() {
+        Log.d(TAG, "LottoActivity - createLottoNum() called")
+        val nums: MutableList<Int> = IntArray(45) { it + 1 }.toMutableList()
+        nums.shuffle()
+
+        myLottoNum = nums.slice(0..5).toMutableList()
+    }
+
+    private fun getLottoResult(): String {
+        Log.d(TAG, "LottoActivity - getLottoResult() called")
+        Log.d(TAG, "LottoActivity - getLottoResult() - 내 로또번호: $myLottoNum")
+        Log.d(TAG, "LottoActivity - getLottoResult() - 로또번호 : $lottoNums")
+        var cnt = 0
+        for (i in 0..5) {
+            if (myLottoNum[i].equals(lottoNums[i])) {
+                cnt++
+            }
+        }
+        return when (cnt) {
+            6 -> "1등"
+            5 -> "2등"
+            4 -> "3등"
+            3 -> "4등"
+            2 -> "5등"
+            1 -> "6등"
+            else -> "아무것도 없쥬?"
+        }
+    }
+
+    private fun initNetWork() {
+        Log.d(TAG, "LottoActivity - initNetWork() called")
+        val call: Call<ResponseLottoNum> =
+            LottoClient.lottoService.responseLottoInfo(ROUND)
+        call.enqueue(object : Callback<ResponseLottoNum> {
+            override fun onResponse(
+                call: Call<ResponseLottoNum>,
+                response: Response<ResponseLottoNum>
+            ) {
+                Log.d(TAG, "LottoActivity - onResponse() - ${response.body()}")
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        if (it.returnValue == SUCCESS) {
+                            lottoNums.add(it.lottoNum_one)
+                            lottoNums.add(it.lottoNum_two)
+                            lottoNums.add(it.lottoNum_three)
+                            lottoNums.add(it.lottoNum_four)
+                            lottoNums.add(it.lottoNum_five)
+                            lottoNums.add(it.lottoNum_six)
+                            Log.d(TAG, "LottoActivity - onResponse() called : network 연결성공")
+                        } else {
+                            showToast("${it.returnValue} Error입니다.")
+                            Log.d(
+                                TAG,
+                                "LottoActivity - onResponse() called :${it.returnValue} Error입니다."
+                            )
+                        }
+                    }
+                } else {
+                    showToast("연결 오류 뜸")
+                    Log.d(TAG, "${response.code()} error입니다.")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseLottoNum>, t: Throwable) {
+                Log.d(TAG, "response Code error - NetWork 연결 실패")
+                showToast("NetWork 연결 실패")
+            }
+        })
+    }
+
+    companion object {
+        const val ROUND = "10"
+        const val SUCCESS = "success"
+    }
+}
+
+```
+## 오류
+```kotlin
+override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityLottoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        initNetWork() <-- 네트워크 연결하는 코드
+        createLottoNum() <-- 나의 로또번호 생성하는 코드
+        getLottoResult() <-- 로또 번호 비교해서 당첨인지 아닌지 확인하는 코드
+    }
+```
+그냥 세미나에서 배운것과 Chapter1에서 공부한 내용을 복습하자~~라는 식으로 공부한건디..  
+실행하자마자 앱이 터져버졌다..
+오류내용을 보니까, 다음과 같이 `java.lang.IndexOutOfBoundsException`가 발생했다.
+
+<img width="700" src="https://user-images.githubusercontent.com/87055456/174481505-375abb65-27db-439c-8142-c8e72412ffef.png">  
+
+- 로그를 찍어보니 진짜 그렇넹..
+```
+D/로그: LottoActivity - getLottoResult() - 내 로또번호: [30, 16, 31, 26, 35, 24]
+D/로그: LottoActivity - getLottoResult() - 로또번호 : []
+```
+나는 서버에서 json객체를 받아올 때, 문제가 생긴다고 생각하고 개애~~삽질을 했는데, 로그를 찍어보니 또 그건 아니였다.  
+```
+D/로그: RetrofitClient - log() called/ message: --> GET https://dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=10
+```
+- 그래서 오류난 이유는??
+Callback에서 비동기적으로 로또번호를 lottoNums 리스트에 담아주기 전에  Main쓰레드에서 로또번호와  
+나의 로또번호를 비교하려했기 때문에 예외가 발생한 것이였다!!
+> 라면집에서 아직 라면이 나오지도 않았는데, 라면을 먹으려한 것과 같은 행위..  
+
+이론적으로는 알고 있었지만, 직접 개발을 하면서 이런 일을 처음 겪기 때문에 상당히 당황스럽지만 뭔가 뿌듯?하다 ㅋㅋㅋ  

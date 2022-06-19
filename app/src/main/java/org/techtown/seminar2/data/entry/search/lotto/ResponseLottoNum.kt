@@ -5,20 +5,16 @@ import com.google.gson.annotations.SerializedName
 data class ResponseLottoNum(
     @SerializedName("returnValue")
     val returnValue: String,
-    @SerializedName("drwNoDate")
-    val date: String,
-    @SerializedName("drwtNo1")
-    val lottoNum_one: String,
+    @SerializedName("drwNo1")
+    val lottoNum_one: Int,
     @SerializedName("drwtNo2")
-    val lottoNum_two: String,
+    val lottoNum_two: Int,
     @SerializedName("drwtNo3")
-    val lottoNum_three: String,
+    val lottoNum_three: Int,
     @SerializedName("drwtNo4")
-    val lottoNum_four: String,
+    val lottoNum_four: Int,
     @SerializedName("drwtNo5")
-    val lottoNum_five: String,
+    val lottoNum_five: Int,
     @SerializedName("drwtNo6")
-    val lottoNum_six: String,
-    @SerializedName("bnusNo")
-    val bonus_num: String
+    val lottoNum_six: Int,
 )

@@ -98,14 +98,6 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_analyze"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textAlignment="center"
-            android:text="분석결과" />
-
-        <TextView
             android:id="@+id/tv_winning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
