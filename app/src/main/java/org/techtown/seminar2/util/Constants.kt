@@ -5,6 +5,7 @@ object Constants {
 }
 
 object API {
+    const val LOTO_BASE_URL: String = "https://dhlottery.co.kr/common.do?method=getLottoNumber"
     const val BASE_URL: String = "https://api.unsplash.com/"
     const val CLIENT_ID: String = "Qt4-taXk42EUKHxfIT2C8HU9ZjG7qScHhc0oXTzfh3I"
     const val SEARCH_PHOTOS: String = "search/photos"
