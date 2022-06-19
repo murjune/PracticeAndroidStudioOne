@@ -73,6 +73,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun setOnClickButton() {
         binding.btnSearch.setOnClickListener {
+            handleSearchButtonUi()
             searchPhotos(
                 binding.edtSearchImage.text.toString(),
                 completion = { responseState, responsebody ->

@@ -1,17 +1,16 @@
 package org.techtown.seminar2.data.api
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONArray
 import org.json.JSONObject
-import org.techtown.seminar2.util.API
+import org.techtown.seminar2.util.*
 import org.techtown.seminar2.util.Constants.TAG
-import org.techtown.seminar2.util.isJsonArray
-import org.techtown.seminar2.util.isJsonObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.sql.Time
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
@@ -45,12 +44,12 @@ object RetrofitClient {
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 
         // client에 로깅인터셉터, 기본 파라메터 추가
-        with(client ){
+        with(client) {
             addInterceptor(loggingInterceptor)
             addInterceptor(getBaseParameterInterceptor())
             connectTimeout(10, TimeUnit.SECONDS) // 연결 타임아웃
-            readTimeout(10, TimeUnit.SECONDS)   // 읽기 타임아웃
-            writeTimeout(10, TimeUnit.SECONDS)  // 쓰기 타임아웃
+            readTimeout(10, TimeUnit.SECONDS) // 읽기 타임아웃
+            writeTimeout(10, TimeUnit.SECONDS) // 쓰기 타임아웃
             retryOnConnectionFailure(true) // 실패시 다시 시도
         }
 
@@ -75,7 +74,13 @@ object RetrofitClient {
                     .method(originalRequest.method, originalRequest.body)
                     .build()
 
-                return chain.proceed(newRequest)
+                val response: Response = chain.proceed(newRequest)
+                if (response.code != 200) {
+                    Handler(Looper.getMainLooper()).post {
+                        App.instance.showToast("${response.code}에러입니다.")
+                    }
+                }
+                return response
             }
         }
         return baseParameterInterceptor
