@@ -27,8 +27,6 @@ g
 build.gradle,f/0/f07866736216be0ee2aba49e392191aeae700a35
 @
 app/build.gradle,f/4/f4a01d6a4fcb971362ec00a83903fd3902f52164
-z
-Japp/src/main/java/org/techtown/seminar2/data/entry/search/ResponseState.kt,d/7/d7f9b27e838153e9e3ec0e20df52d56443217bdf
 c
 3app/src/main/java/org/techtown/seminar2/util/App.kt,5/9/5991f93a00b6d8c8817f9ee46e14fdd5d02850f9
 P
@@ -37,5 +35,3 @@ j
 :app/src/main/java/org/techtown/seminar2/util/Extentions.kt,6/e/6e7bb20896a19a21c5079462d17a1f7a5428529e
 i
 9app/src/main/java/org/techtown/seminar2/SearchActivity.kt,1/0/10a0cb79019e72790ef1c287595915254503ee61
-r
-Bapp/src/main/java/org/techtown/seminar2/data/api/RetrofitClient.kt,d/d/dd491b5e139e221066a4f2e450d72807f45e4272

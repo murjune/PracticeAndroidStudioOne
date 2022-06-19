@@ -3,42 +3,40 @@ package org.techtown.seminar2.presentation
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.*
 import org.techtown.seminar2.data.api.LottoClient
-import org.techtown.seminar2.data.entry.search.lotto.ResponseLottoNum
 import org.techtown.seminar2.databinding.ActivityLottoBinding
 import org.techtown.seminar2.util.Constants.TAG
 import org.techtown.seminar2.util.showToast
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
 
 class LottoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLottoBinding
-    private var lottoNums = mutableListOf<Int>()
-    private lateinit var myLottoNum: MutableList<Int>
+    private val job = Job()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLottoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initNetWork()
         onClickButton()
+
     }
 
     private fun onClickButton() {
         binding.btnResult.setOnClickListener {
-            if (lottoNums.isNotEmpty()) {
-                createMyLottoNum()
-                val result = getLottoResult()
-                changeMyLottoNum()
-                binding.tvWinning.text = "$lottoNums \n $result"
-            } else {
-                showToast("아직 서버에서 로또번호 못가져옴 ㅜ")
+            val myLottoNum = createMyLottoNum()
+            changeMyLottoNum(myLottoNum)
+            CoroutineScope(Dispatchers.IO + job).launch {
+                val winningLottoNums = async { getWinningLottoNums() }
+                val rank = getLottoResult(myLottoNum, winningLottoNums.await())
+                withContext(Dispatchers.Main) {
+                    binding.tvWinning.text = "${winningLottoNums.await()} : $rank"
+                }
             }
         }
     }
-    private fun changeMyLottoNum() {
+
+    private fun changeMyLottoNum(myLottoNum: MutableList<Int>) {
         with(binding) {
             tvNum1.text = myLottoNum[0].toString()
             tvNum2.text = myLottoNum[1].toString()
@@ -48,21 +46,25 @@ class LottoActivity : AppCompatActivity() {
             tvNum6.text = myLottoNum[5].toString()
         }
     }
-    private fun createMyLottoNum() {
+
+    private fun createMyLottoNum(): MutableList<Int> {
         Log.d(TAG, "LottoActivity - createLottoNum() called")
         val nums: MutableList<Int> = IntArray(45) { it + 1 }.toMutableList()
         nums.shuffle()
 
-        myLottoNum = nums.slice(0..5).toMutableList()
+        return nums.slice(0..5).toMutableList()
     }
 
-    private fun getLottoResult(): String {
-        Log.d(TAG, "LottoActivity - getLottoResult() called")
-        Log.d(TAG, "LottoActivity - getLottoResult() - 내 로또번호: $myLottoNum")
-        Log.d(TAG, "LottoActivity - getLottoResult() - 로또번호 : $lottoNums")
+    private suspend fun getLottoResult(
+        lottoNums: MutableList<Int>?,
+        myLottoNums: MutableList<Int>
+    ): String {
+        if (lottoNums == null) {
+            return "네트워크 오류발생"
+        }
         var cnt = 0
         for (i in 0..5) {
-            if (myLottoNum[i].equals(lottoNums[i])) {
+            if (myLottoNums[i].equals(lottoNums[i])) {
                 cnt++
             }
         }
@@ -77,45 +79,28 @@ class LottoActivity : AppCompatActivity() {
         }
     }
 
-    private fun initNetWork() {
-        Log.d(TAG, "LottoActivity - initNetWork() called")
-        val call: Call<ResponseLottoNum> =
-            LottoClient.lottoService.responseLottoInfo(ROUND)
-        call.enqueue(object : Callback<ResponseLottoNum> {
-            override fun onResponse(
-                call: Call<ResponseLottoNum>,
-                response: Response<ResponseLottoNum>
-            ) {
-                Log.d(TAG, "LottoActivity - onResponse() - ${response.body()}")
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        if (it.returnValue == SUCCESS) {
-                            lottoNums.add(it.lottoNum_one)
-                            lottoNums.add(it.lottoNum_two)
-                            lottoNums.add(it.lottoNum_three)
-                            lottoNums.add(it.lottoNum_four)
-                            lottoNums.add(it.lottoNum_five)
-                            lottoNums.add(it.lottoNum_six)
-                            Log.d(TAG, "LottoActivity - onResponse() called : network 연결성공")
-                        } else {
-                            showToast("${it.returnValue} Error입니다.")
-                            Log.d(
-                                TAG,
-                                "LottoActivity - onResponse() called :${it.returnValue} Error입니다."
-                            )
-                        }
-                    }
-                } else {
-                    showToast("연결 오류 뜸")
-                    Log.d(TAG, "${response.code()} error입니다.")
+    private suspend fun getWinningLottoNums(): MutableList<Int> {
+        var WinlottoNums = mutableListOf<Int>()
+        val response = LottoClient.lottoService.responseLottoInfo(ROUND)
+        if (response.isSuccessful) {
+            response.body()?.let {
+                if (it.returnValue == SUCCESS) {
+                    WinlottoNums.add(it.lottoNum_one)
+                    WinlottoNums.add(it.lottoNum_two)
+                    WinlottoNums.add(it.lottoNum_three)
+                    WinlottoNums.add(it.lottoNum_four)
+                    WinlottoNums.add(it.lottoNum_five)
+                    WinlottoNums.add(it.lottoNum_six)
                 }
             }
+            return WinlottoNums
+        }
+        return mutableListOf()
+    }
 
-            override fun onFailure(call: Call<ResponseLottoNum>, t: Throwable) {
-                Log.d(TAG, "response Code error - NetWork 연결 실패")
-                showToast("NetWork 연결 실패")
-            }
-        })
+    override fun onDestroy() {
+        job.cancel()
+        super.onDestroy()
     }
 
     companion object {

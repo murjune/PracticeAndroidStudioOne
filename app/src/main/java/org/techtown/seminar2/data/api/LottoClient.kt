@@ -71,5 +71,5 @@ object LottoClient {
         return baseParameterInterceptor
     }
 
-    val lottoService: IRetrofit = lottoClient.create(IRetrofit::class.java)
+    val lottoService: LottoService = lottoClient.create(LottoService::class.java)
 }

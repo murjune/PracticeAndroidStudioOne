@@ -15,7 +15,4 @@ interface IRetrofit {
 
     @GET(API.SEARCH_USERS)
     fun searchUsers(@Query("query") searchTerm: String): Call<JsonElement>
-
-    @GET("common.do")
-    fun responseLottoInfo(@Query("drwNo") round: String): Call<ResponseLottoNum>
 }
