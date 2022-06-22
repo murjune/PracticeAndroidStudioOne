@@ -23,8 +23,6 @@ g
 7app/src/main/java/org/techtown/seminar2/MainActivity.kt,4/6/46ae8ae29a51934cc1c5b12117a16091070f2520
 <
 build.gradle,f/0/f07866736216be0ee2aba49e392191aeae700a35
-@
-app/build.gradle,f/4/f4a01d6a4fcb971362ec00a83903fd3902f52164
 c
 3app/src/main/java/org/techtown/seminar2/util/App.kt,5/9/5991f93a00b6d8c8817f9ee46e14fdd5d02850f9
 P
