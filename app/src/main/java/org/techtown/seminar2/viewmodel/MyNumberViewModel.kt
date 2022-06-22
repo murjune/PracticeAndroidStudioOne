@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 // 데이터의 변경
 // 뷰모델은 데이터의 변경사항을 알려주는 라이브 데이터를 가지고 있고
 class MyNumberViewModel : ViewModel() {
-
+    var cnt = 100
 //    // 1. Mutable Live Data - 수정 가능한 녀석
 //    var inputText = MutableLiveData<String>("")
 //    private val _currentValue = MutableLiveData<Int>(0)
