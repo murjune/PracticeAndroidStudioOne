@@ -1,6 +1,7 @@
 package org.techtown.seminar2.data.api
 
 import com.google.gson.JsonElement
+import org.techtown.seminar2.data.entry.search.lotto.ResponseLottoNum
 import org.techtown.seminar2.util.API
 import retrofit2.Call
 import retrofit2.http.GET
