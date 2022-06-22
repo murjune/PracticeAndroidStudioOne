@@ -1,9 +1,10 @@
-package org.techtown.seminar2
+package org.techtown.seminar2.presentation
 
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import org.techtown.seminar2.R
 import org.techtown.seminar2.databinding.ActivityCarculatorBinding
 import org.techtown.seminar2.viewmodel.MyNumberViewModel
 
