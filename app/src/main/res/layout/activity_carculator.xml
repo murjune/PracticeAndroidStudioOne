@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="viewmodel"
-            type="org.techtown.seminar2.viewmodel.MyNumberViewModel" />
-    </data>
+<!--    <data>-->
+<!--        <variable-->
+<!--            name="viewmodel"-->
+<!--            type="org.techtown.seminar2.viewmodel.MyNumberViewModel" />-->
+<!--    </data>-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,20 +19,20 @@
             android:id="@+id/tv_result"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="1234"
-            android:text="@{viewmodel.currentValue.toString()}"
+            android:text=""
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1234" />
 
         <EditText
             android:id="@+id/edt_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@={viewmodel.inputText}"
+            android:text=""
             app:layout_constraintEnd_toStartOf="@+id/btn_plus"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +44,6 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:text="더하기"
-            android:onClick="@{() -> viewmodel.increase()}"
             app:layout_constraintEnd_toStartOf="@+id/btn_minus"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/edt_input"
@@ -55,7 +54,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="빼기"
-            android:onClick="@{() -> viewmodel.decrease()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btn_plus"
