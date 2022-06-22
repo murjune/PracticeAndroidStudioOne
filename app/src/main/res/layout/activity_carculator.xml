@@ -6,7 +6,7 @@
 <!--    <data>-->
 <!--        <variable-->
 <!--            name="viewmodel"-->
-<!--            type="org.techtown.seminar2.viewmodel.MyNumberViewModel" />-->
+<!--            type="org.techtown.seminar2.presentation.viewmodel.MyNumberViewModel" />-->
 <!--    </data>-->
 
     <androidx.constraintlayout.widget.ConstraintLayout

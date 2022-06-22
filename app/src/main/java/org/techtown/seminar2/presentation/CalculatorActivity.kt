@@ -4,7 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import org.techtown.seminar2.databinding.ActivityCarculatorBinding
-import org.techtown.seminar2.viewmodel.MyNumberViewModel
+import org.techtown.seminar2.presentation.viewmodel.MyNumberViewModel
+import org.techtown.seminar2.presentation.viewmodel.MyNumberViewModelFactory
 
 class CalculatorActivity : AppCompatActivity() {
     //    private val myNumberViewModel: MyNumberViewModel by viewModels()
@@ -15,12 +16,14 @@ class CalculatorActivity : AppCompatActivity() {
         binding = ActivityCarculatorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // TODO // 뷰모델에 따로 cnt라는 변수를 가져오도록 했지만, Activity에서 cnt = 100으로 지정하는 로직이 있기 때문에
-        //        // Activity가 재생산될 때마다 다시 100으로 돌아간다.
-        //        // 이 문제를 해결하고자 다음 단계에서는 ViewModel에 초깃값을 건네주고, 나머지 로직에서는 저장된 값을 사용하도록 하겠다.
-        
-        val myNumberViewModel = ViewModelProvider(this).get(MyNumberViewModel::class.java)
-        myNumberViewModel.cnt = 100
+        // ViewModelProvider로 뷰모델 객체를 생성시 초기값을 전달하는 것이 금지되어 있기 때문에
+        // ViewModelFactory를 사용하도록하자:D
+        // 1. 뷰모델 팩토리에 뷰모델에 전달한 인자를 넣어준다.
+        val factory = MyNumberViewModelFactory(100)
+        // 2. 뷰모델provider의 생성자에 팩토리를 추가인자로 넣어준다
+        // 그러면 뷰모델provider가 factory를 통해서 MyNumberViewModel객체를 만들어준다.
+        // 이제 화면을 rotate해서 Activity가 파괴되도 뷰모델에서 data값을 가져오기 때문에 값이 변경되지 않는것을 볼 수 있다 :D
+        val myNumberViewModel = ViewModelProvider(this, factory).get(MyNumberViewModel::class.java)
         binding.tvResult.text = myNumberViewModel.cnt.toString()
 
         binding.btnPlus.setOnClickListener {
