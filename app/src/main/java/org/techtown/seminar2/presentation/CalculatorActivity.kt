@@ -1,20 +1,29 @@
 package org.techtown.seminar2.presentation
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import org.techtown.seminar2.R
 import org.techtown.seminar2.databinding.ActivityCarculatorBinding
-import org.techtown.seminar2.viewmodel.MyNumberViewModel
 
 class CalculatorActivity : AppCompatActivity() {
-//    private val myNumberViewModel: MyNumberViewModel by viewModels()
+    //    private val myNumberViewModel: MyNumberViewModel by viewModels()
     private lateinit var binding: ActivityCarculatorBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCarculatorBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        var cnt = 100
+        binding.tvResult.text = cnt.toString()
+
+        binding.btnPlus.setOnClickListener {
+            cnt++
+            binding.tvResult.text = cnt.toString()
+        }
+        binding.btnMinus.setOnClickListener {
+            cnt--
+            binding.tvResult.text = cnt.toString()
+        }
 //        binding = DataBindingUtil.setContentView(this, R.layout.activity_carculator)
 //        // 뷰 모델을 바인딩 변수로 사용한다.
 //        binding.viewmodel = myNumberViewModel

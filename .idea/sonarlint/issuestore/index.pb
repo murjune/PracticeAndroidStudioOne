@@ -9,8 +9,6 @@ p
 @app/src/main/java/org/techtown/seminar2/fragment/HomeFragment.kt,3/b/3b270017193b53ddb96b98ce98c38d3c0f061f53
 r
 Bapp/src/main/java/org/techtown/seminar2/fragment/FriendFragment.kt,e/6/e6c031cbdd1a36fa78706872eab1da18208c51cc
-v
-Fapp/src/main/java/org/techtown/seminar2/viewmodel/MyNumberViewModel.kt,3/4/34f84540c4dfa0c9d56c4f37d7779823a87878a7
 S
 #.idea/sonarlint/issuestore/index.pb,9/f/9fe84ebb15faf917b7def6236dba604453cc61e0
 u
