@@ -1,8 +1,6 @@
 package org.techtown.seminar2.presentation.viewmodel
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 
 // 데이터의 변경
 // 뷰모델은 데이터의 변경사항을 알려주는 라이브 데이터를 가지고 있고
@@ -10,8 +8,11 @@ class MyNumberViewModel(
     _cnt: Int,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    // 1. Mutable Live Data - 수정 가능한 녀석
+
     var liveCounter: MutableLiveData<Int> = MutableLiveData(_cnt)
+    val modifiedCounter: LiveData<String> = Transformations.map(liveCounter) { counter ->
+        "$counter 입니다."
+    }
     var cnt = savedStateHandle.get<Int>(SAVE_STATE_KEY) ?: _cnt
     fun saveState() {
         savedStateHandle.set(SAVE_STATE_KEY, cnt)
