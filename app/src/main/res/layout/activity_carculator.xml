@@ -61,5 +61,18 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btn_plus"
             app:layout_constraintTop_toTopOf="@+id/edt_input" />
+
+        <ProgressBar
+            android:id="@+id/prg_calculator"
+            style="?android:progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:max="100"
+            app:progressScaled= "@{viewmodel.liveCounter}"
+            android:min="0"
+            app:layout_constraintBottom_toTopOf="@+id/tv_result"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.3" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

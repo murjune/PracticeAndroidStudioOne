@@ -11,22 +11,14 @@ r
 Bapp/src/main/java/org/techtown/seminar2/fragment/FriendFragment.kt,e/6/e6c031cbdd1a36fa78706872eab1da18208c51cc
 S
 #.idea/sonarlint/issuestore/index.pb,9/f/9fe84ebb15faf917b7def6236dba604453cc61e0
-u
-Eapp/src/main/java/org/techtown/seminar2/coroutine/CoroutinActivity.kt,0/8/085b3c25b815fba94ebe28969444b526ce91d3fa
 h
 8app/src/main/java/org/techtown/seminar2/FirstFragment.kt,6/e/6e859f156a1a6699d7e3aec318cc1706f5fd7fef
-u
-Eapp/src/main/java/org/techtown/seminar2/coroutine/PracticeActivity.kt,a/a/aa48344314a8b8901465bac21e7465ea3ecf577d
 i
 9app/src/main/java/org/techtown/seminar2/SecondFragment.kt,4/0/40da35f798f163b09363bd0f49173a4445785387
 g
 7app/src/main/java/org/techtown/seminar2/MainActivity.kt,4/6/46ae8ae29a51934cc1c5b12117a16091070f2520
-<
-build.gradle,f/0/f07866736216be0ee2aba49e392191aeae700a35
 c
 3app/src/main/java/org/techtown/seminar2/util/App.kt,5/9/5991f93a00b6d8c8817f9ee46e14fdd5d02850f9
-P
- app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
 j
 :app/src/main/java/org/techtown/seminar2/util/Extentions.kt,6/e/6e7bb20896a19a21c5079462d17a1f7a5428529e
 i

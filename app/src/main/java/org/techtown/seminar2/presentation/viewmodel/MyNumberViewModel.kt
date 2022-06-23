@@ -1,6 +1,5 @@
 package org.techtown.seminar2.presentation.viewmodel
 
-import android.net.http.SslCertificate.saveState
 import androidx.lifecycle.*
 
 class MyNumberViewModel(
@@ -8,7 +7,7 @@ class MyNumberViewModel(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private var _liveCounter: MutableLiveData<Int> = MutableLiveData(_cnt)
-    private val liveCounter: LiveData<Int> get() = _liveCounter
+    val liveCounter: LiveData<Int> get() = _liveCounter
     val modifiedCounter: LiveData<String> = Transformations.map(liveCounter) { counter ->
         "$counter 입니다."
     }
@@ -17,7 +16,6 @@ class MyNumberViewModel(
 //    private fun saveState() {
 //        savedStateHandle.set(SAVE_STATE_KEY, liveCounter.value)
 //    }
-
     fun increaseCount() {
         _liveCounter.value = liveCounter.value?.plus(1)
     }
