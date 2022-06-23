@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-<!--    <data>-->
-<!--        <variable-->
-<!--            name="viewmodel"-->
-<!--            type="org.techtown.seminar2.presentation.viewmodel.MyNumberViewModel" />-->
-<!--    </data>-->
+    <data>
+        <variable
+            name="viewmodel"
+            type="org.techtown.seminar2.presentation.viewmodel.MyNumberViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:id="@+id/tv_result"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="@{viewmodel.modifiedCounter.toString()}"
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

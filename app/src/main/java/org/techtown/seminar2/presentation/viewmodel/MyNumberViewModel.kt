@@ -8,7 +8,6 @@ class MyNumberViewModel(
     _cnt: Int,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-
     var liveCounter: MutableLiveData<Int> = MutableLiveData(_cnt)
     val modifiedCounter: LiveData<String> = Transformations.map(liveCounter) { counter ->
         "$counter 입니다."
