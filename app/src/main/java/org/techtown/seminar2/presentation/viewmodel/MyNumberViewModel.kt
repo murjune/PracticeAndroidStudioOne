@@ -1,5 +1,6 @@
 package org.techtown.seminar2.presentation.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
@@ -9,13 +10,9 @@ class MyNumberViewModel(
     _cnt: Int,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    // saveState는 key-value형태로 값을 저장한다.
-    // 따라서, 저장과 보관에 사용할 key-value를 설정한다.
-
-    // 저장된게 없으면 초기값으로 세팅
+    // 1. Mutable Live Data - 수정 가능한 녀석
+    var liveCounter: MutableLiveData<Int> = MutableLiveData(_cnt)
     var cnt = savedStateHandle.get<Int>(SAVE_STATE_KEY) ?: _cnt
-
-    // cnt를 savedStateHandle에 저장하는 함수
     fun saveState() {
         savedStateHandle.set(SAVE_STATE_KEY, cnt)
     }
