@@ -66,6 +66,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
     // ViewModel utilities for Compose
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
+    // viewModel savedstate
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.1"
     // LiveData -옵저버 패턴 관련 - 즉 데이터의 변경사항을 알 수 있다.
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
     // retropit
