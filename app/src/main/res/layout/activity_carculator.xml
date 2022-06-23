@@ -68,11 +68,34 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:max="@{101}"
-            app:progressScaled= "@{viewmodel.liveCounter}"
             android:min="@{-1}"
             app:layout_constraintBottom_toTopOf="@+id/tv_result"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintWidth_percent="0.3" />
+            app:layout_constraintWidth_percent="0.3"
+            app:progressScaled="@{viewmodel.liveCounter}" />
+
+        <CheckBox
+            android:id="@+id/ckbox_calculator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:checked="@={viewmodel._hasChecked}"
+            android:text="checkBox"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_plus" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@{viewmodel.hasChecked.toString().toString()}"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ckbox_calculator"
+            tools:text="false" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
