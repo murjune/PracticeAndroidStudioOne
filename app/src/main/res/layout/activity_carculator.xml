@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="org.techtown.seminar2.presentation.viewmodel.MyNumberViewModel" />
@@ -43,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
+            android:onClick="@{() -> viewmodel.increaseCount()}"
             android:text="더하기"
             app:layout_constraintEnd_toStartOf="@+id/btn_minus"
             app:layout_constraintHorizontal_bias="0.5"
@@ -53,6 +55,7 @@
             android:id="@+id/btn_minus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> viewmodel.decreaseCount()}"
             android:text="빼기"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

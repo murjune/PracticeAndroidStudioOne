@@ -23,14 +23,5 @@ class CalculatorActivity : AppCompatActivity() {
         // 3) LiveData를 관측하기 위해 lifecycleOwner 설정
         // binding에 LifecycleOwner 지정 시 LiveData가 실시간으로 변하는 것을 확인 가능하다
         binding.lifecycleOwner = this@CalculatorActivity
-
-        binding.btnPlus.setOnClickListener {
-            myNumberViewModel.liveCounter.value = myNumberViewModel.liveCounter.value?.plus(1)
-            myNumberViewModel.saveState()
-        }
-        binding.btnMinus.setOnClickListener {
-            myNumberViewModel.liveCounter.value = myNumberViewModel.liveCounter.value?.minus(1)
-            myNumberViewModel.saveState()
-        }
     }
 }
